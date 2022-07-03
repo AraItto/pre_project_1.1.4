@@ -9,10 +9,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
+    Connection connection = Util.getNewConnection();
 
     public void createUsersTable() {
-        try (Connection connection = Util.getNewConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.execute("CREATE TABLE IF NOT EXISTS `mydb113`.`users` (" +
                     "`id` INT NOT NULL AUTO_INCREMENT,\n" +
                     "        `name` VARCHAR(45) NOT NULL,\n" +
@@ -23,7 +23,13 @@ public class UserDaoJDBCImpl implements UserDao {
                     "        DEFAULT CHARACTER SET = utf8");
             connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.getMessage();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction is being rollback.");
+                ex.getMessage();
+            }
         }
     }
 
@@ -33,7 +39,13 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.execute("DROP TABLE IF EXISTS `mydb113`.`users`");
             connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.getMessage();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction is being rollback.");
+                ex.getMessage();
+            }
         }
     }
 
@@ -48,7 +60,13 @@ public class UserDaoJDBCImpl implements UserDao {
             }
             connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.getMessage();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction is being rollback.");
+                ex.getMessage();
+            }
         }
     }
 
@@ -59,7 +77,13 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.getMessage();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction is being rollback.");
+                ex.getMessage();
+            }
         }
     }
 
@@ -79,8 +103,15 @@ public class UserDaoJDBCImpl implements UserDao {
             connection.commit();
             return userList;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.getMessage();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction is being rollback.");
+                ex.getMessage();
+            }
         }
+        return Collections.emptyList();
     }
 
     public void cleanUsersTable() {
@@ -89,7 +120,13 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.execute("DELETE FROM `mydb113`.`users`");
             connection.commit();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.getMessage();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.err.println("Transaction is being rollback.");
+                ex.getMessage();
+            }
         }
     }
 }
