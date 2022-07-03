@@ -26,8 +26,8 @@ public class UserDaoJDBCImpl implements UserDao {
             e.getMessage();
             try {
                 connection.rollback();
-            } catch (SQLException ex) {
                 System.err.println("Transaction is being rollback.");
+            } catch (SQLException ex) {
                 ex.getMessage();
             }
         }
@@ -42,8 +42,8 @@ public class UserDaoJDBCImpl implements UserDao {
             e.getMessage();
             try {
                 connection.rollback();
-            } catch (SQLException ex) {
                 System.err.println("Transaction is being rollback.");
+            } catch (SQLException ex) {
                 ex.getMessage();
             }
         }
@@ -63,8 +63,8 @@ public class UserDaoJDBCImpl implements UserDao {
             e.getMessage();
             try {
                 connection.rollback();
-            } catch (SQLException ex) {
                 System.err.println("Transaction is being rollback.");
+            } catch (SQLException ex) {
                 ex.getMessage();
             }
         }
@@ -80,8 +80,8 @@ public class UserDaoJDBCImpl implements UserDao {
             e.getMessage();
             try {
                 connection.rollback();
-            } catch (SQLException ex) {
                 System.err.println("Transaction is being rollback.");
+            } catch (SQLException ex) {
                 ex.getMessage();
             }
         }
@@ -106,8 +106,8 @@ public class UserDaoJDBCImpl implements UserDao {
             e.getMessage();
             try {
                 connection.rollback();
-            } catch (SQLException ex) {
                 System.err.println("Transaction is being rollback.");
+            } catch (SQLException ex) {
                 ex.getMessage();
             }
         }
@@ -123,8 +123,8 @@ public class UserDaoJDBCImpl implements UserDao {
             e.getMessage();
             try {
                 connection.rollback();
-            } catch (SQLException ex) {
                 System.err.println("Transaction is being rollback.");
+            } catch (SQLException ex) {
                 ex.getMessage();
             }
         }
