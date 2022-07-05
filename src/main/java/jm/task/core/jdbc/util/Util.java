@@ -13,32 +13,14 @@ import java.util.Properties;
 
 public class Util {
     // реализуйте настройку соеденения с БД
-    private static Connection connection;
     private static SessionFactory sessionFactory;
     private static final String URL = "jdbc:mysql://localhost:3306/mydb113";
     private static final String USER = "root";
     private static final String PASSWORD = "chmykh99";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
-    private static Util util;
-    public static Util getUtil() {
-        if (util == null) {
-            util = new Util();
-        }
-        return util;
-    }
-    public Util() {}
 
-    public static Connection getNewConnection() {
-        try {
-            Class.forName(DRIVER);
-            connection = DriverManager.getConnection(URL,USER,PASSWORD);
-            connection.setAutoCommit(false);
-            return connection;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public Util() {}
 
     public static SessionFactory getSessionFactory() {
         try {

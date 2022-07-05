@@ -4,12 +4,14 @@ import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
-    private SessionFactory sessionFactory = Util.getUtil().getSessionFactory();
+    private final SessionFactory sessionFactory = Util.getSessionFactory();
+    private Transaction transaction;
     private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `users` (" +
             "`id` INT NOT NULL AUTO_INCREMENT,\n" +
             "        `name` VARCHAR(45) NOT NULL,\n" +
@@ -28,11 +30,11 @@ public class UserDaoHibernateImpl implements UserDao {
     public void createUsersTable() {
         Session session = sessionFactory.openSession();
         try {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.createSQLQuery(SQL_CREATE_TABLE).executeUpdate();
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            session.getTransaction().rollback();
+            transaction.rollback();
             e.getMessage();
         } finally {
             session.close();
@@ -43,11 +45,11 @@ public class UserDaoHibernateImpl implements UserDao {
     public void dropUsersTable() {
         Session session = sessionFactory.openSession();
         try {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.createSQLQuery(SQL_DROP_TABLE).executeUpdate();
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            session.getTransaction().rollback();
+            transaction.rollback();
             e.getMessage();
         } finally {
             session.close();
@@ -58,12 +60,12 @@ public class UserDaoHibernateImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         Session session = sessionFactory.openSession();
         try {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.save(new User(name, lastName, age));
-            session.getTransaction().commit();
+            transaction.commit();
             System.out.printf("User - %s добавлен в таблицу", name);
         } catch (Exception e) {
-            session.getTransaction().rollback();
+            transaction.rollback();
             e.getMessage();
         } finally {
             session.close();
@@ -74,12 +76,12 @@ public class UserDaoHibernateImpl implements UserDao {
     public void removeUserById(long id) {
         Session session = sessionFactory.openSession();
         try {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             User deleteThis = session.get(User.class, id);
             session.delete(deleteThis);
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            session.getTransaction().rollback();
+            transaction.rollback();
             e.getMessage();
         } finally {
             session.close();
@@ -91,11 +93,11 @@ public class UserDaoHibernateImpl implements UserDao {
         List userList = new ArrayList<>();
         Session session = sessionFactory.openSession();
         try {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             userList = session.createQuery("From " + User.class.getSimpleName()).list();
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            session.getTransaction().rollback();
+            transaction.rollback();
             e.getMessage();
         } finally {
             session.close();
@@ -107,12 +109,14 @@ public class UserDaoHibernateImpl implements UserDao {
     public void cleanUsersTable() {
         Session session = sessionFactory.openSession();
         try {
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.createSQLQuery("DELETE FROM `mydb113`.`users`").executeUpdate();
-            session.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            session.getTransaction().rollback();
+            transaction.rollback();
             e.getMessage();
+        } finally {
+            session.close();
         }
     }
 }
